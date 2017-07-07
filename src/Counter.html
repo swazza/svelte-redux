@@ -1,0 +1,23 @@
+<div>
+  <button on:click='decrement(store.dispatch)'>-</button>
+  <span>{{count}}</span>
+  <button on:click='increment(store.dispatch)'>+</button>
+</div>
+<script>
+import { store } from "./pods";
+export default {
+  data: () => ({ count: 0, store }),
+  oncreate() {
+    let set = this.set;
+    let boundSet = set.bind(this);
+    store.subscribe(() => {
+      let { count } = store.getState();
+      boundSet({ count });
+    });
+  },
+  methods: {
+    increment: dispatch => dispatch({ type: "INCREMENT" }),
+    decrement: dispatch => dispatch({ type: "DECREMENT" })
+  }
+};
+</script>
